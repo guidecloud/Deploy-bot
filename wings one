@@ -1,0 +1,10 @@
+sudo systemctl stop containerd
+sudo rm -rf /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/*
+sudo systemctl start containerd
+sudo apt install fuse-overlayfs
+sudo mkdir -p /etc/docker
+echo '{"storage-driver": "fuse-overlayfs"}' | sudo tee /etc/docker/daemon.json
+sudo systemctl restart docker
+df -h
+df -T /var/lib
+docker info | grep Storage
